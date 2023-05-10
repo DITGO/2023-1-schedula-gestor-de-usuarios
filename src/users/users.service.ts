@@ -66,7 +66,7 @@ export class UsersService {
     if (users.length === 0)
       throw new NotFoundException('Não existem usuarios cadastrados');
     return users.map((user) => ({
-      userId: user.id,
+      id: user.id,
       username: user.username,
       email: user.email,
       name: user.name,
