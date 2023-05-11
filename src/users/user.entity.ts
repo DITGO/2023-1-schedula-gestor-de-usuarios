@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-@Unique(['email'])
+@Unique(['email', 'cpf'])
 export class User extends BaseEntity {
   /*Identificador da classe gerado automaticamente */
   @PrimaryGeneratedColumn('uuid')
@@ -38,6 +38,10 @@ export class User extends BaseEntity {
   /*Senha */
   @Column({ nullable: false })
   password: string;
+
+  /*CPF */
+  @Column({ nullable: false, type: 'varchar', length: 14 })
+  cpf: string;
 
   /*Salto */
   @Column({ nullable: false })

@@ -1,5 +1,6 @@
 import { UserProfile } from '../user-profiles.enum';
 import { IsString, IsEmail, IsOptional } from 'class-validator';
+import { IsCPF } from 'class-validator-cpf';
 export class UpdateUserDto {
   /*Name*/
   @IsOptional()
@@ -35,4 +36,15 @@ export class UpdateUserDto {
   /*Profile*/
   @IsOptional()
   profile: UserProfile;
+
+  /*CPF*/
+  @IsOptional()
+  @IsString({
+    message: 'Informe um CPF válido',
+  })
+  @IsCPF({
+    message: 'Informe um CPF válido',
+  })
+  cpf: string;
+
 }

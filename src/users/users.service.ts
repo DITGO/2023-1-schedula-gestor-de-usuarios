@@ -43,6 +43,7 @@ export class UsersService {
         name: user.name,
         position: user.position,
         profile: user.profile,
+        cpf: user.cpf,
       };
     } catch (error) {
       if (error.code.toString() === '23505') {
@@ -72,6 +73,7 @@ export class UsersService {
       name: user.name,
       position: user.position,
       profile: user.profile,
+      cpf: user.cpf,
     }));
   }
 
@@ -90,6 +92,7 @@ export class UsersService {
       name: user.name,
       position: user.position,
       profile: user.profile,
+      cpf: user.cpf,
     };
   }
 
@@ -98,12 +101,13 @@ export class UsersService {
   async updateUser(updateUserDto: UpdateUserDto, id: string): Promise<UserDto> {
     const user = await this.userRepository.findOneBy({ id: id });
     if (!user) throw new NotFoundException('Usuário não encontrado');
-    const { name, username, email, position, profile } = updateUserDto;
+    const { name, username, email, position, profile, cpf } = updateUserDto;
     user.name = name ? name : user.name;
     user.username = username ? username : user.username;
     user.email = email ? email : user.email;
     user.position = position ? position : user.position;
     user.profile = profile ? profile : user.profile;
+    user.cpf = cpf ? cpf : user.cpf;
 
     try {
       await this.userRepository.save(user);
@@ -113,6 +117,7 @@ export class UsersService {
         name: user.name,
         position: user.position,
         profile: user.profile,
+        cpf: user.cpf,
       };
     } catch (error) {
       throw new InternalServerErrorException(

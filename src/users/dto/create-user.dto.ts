@@ -2,6 +2,7 @@
 
 // Possibilidade de usar o decorator @Matches para aumentar a segurança das senhas
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
+import { IsCPF } from "class-validator-cpf";
 
 export class CreateUserDto {
   /*Email*/
@@ -66,4 +67,14 @@ export class CreateUserDto {
     message: 'A senha deve ter no mínimo 6 caracteres',
   })
   password: string;
+
+  /*CPF*/
+  
+  @IsNotEmpty({
+    message: 'Informe um CPF',
+  })
+  @IsCPF({
+    message: 'Informe um CPF válido',
+  })
+  cpf: string;
 }
