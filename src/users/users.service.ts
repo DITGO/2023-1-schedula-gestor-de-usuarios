@@ -47,7 +47,12 @@ export class UsersService {
       };
     } catch (error) {
       if (error.code.toString() === '23505') {
-        throw new ConflictException('Endereço de email já está em uso');
+        if (error.detail.includes('cpf'))
+          throw new ConflictException('CPF já está em uso');
+        else if (error.detail.includes('username'))
+          throw new ConflictException('Nome de usuário já está em uso');
+        else if (error.detail.includes('email'))
+          throw new ConflictException('Endereço de email já está em uso');
       } else {
         throw new InternalServerErrorException(
           'Erro ao salvar o usuário no banco de dados',
