@@ -24,6 +24,7 @@ describe('AuthService', () => {
     position: 'police',
     profile: UserProfile.ADMIN,
     password: 'mock123!',
+    cpf: '056.065.766-86',
   };
 
   beforeEach(async () => {

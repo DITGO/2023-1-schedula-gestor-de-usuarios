@@ -18,6 +18,7 @@ describe('UsersController', () => {
     position: 'police',
     profile: UserProfile.ADMIN,
     password: 'mock123!',
+    cpf: '056.065.766-86',
   };
 
   const mockUpdateUserDto: UpdateUserDto = {
@@ -26,6 +27,7 @@ describe('UsersController', () => {
     email: 'mock@gmail.com',
     position: 'tech',
     profile: UserProfile.ADMIN,
+    cpf: '056.065.766-86',
   };
 
   const mockUsersService = {
