@@ -5,4 +5,5 @@ export class UserDto {
   name: string;
   profile: string;
   position: string;
+  cpf: string;
 }

@@ -27,6 +27,7 @@ describe('UsersService', () => {
     position: 'police',
     profile: UserProfile.ADMIN,
     password: 'mock123!',
+    cpf: '056.065.766-86',
   };
 
   const mockReturnUserDto: UserDto = {
@@ -35,6 +36,7 @@ describe('UsersService', () => {
     username: 'mock',
     position: 'police',
     profile: UserProfile.ADMIN,
+    cpf: '056.065.766-86',
   };
 
   const mockUpdateUserDto: UpdateUserDto = {
@@ -43,6 +45,7 @@ describe('UsersService', () => {
     username: 'mocking',
     position: 'police',
     profile: UserProfile.ADMIN,
+    cpf: '056.065.766-86',
   };
 
   const usersEntityList = [{ ...mockReturnUserDto }];

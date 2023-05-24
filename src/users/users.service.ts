@@ -43,10 +43,16 @@ export class UsersService {
         name: user.name,
         position: user.position,
         profile: user.profile,
+        cpf: user.cpf,
       };
     } catch (error) {
       if (error.code.toString() === '23505') {
-        throw new ConflictException('Endereço de email já está em uso');
+        if (error.detail.includes('cpf'))
+          throw new ConflictException('CPF já está em uso');
+        else if (error.detail.includes('username'))
+          throw new ConflictException('Nome de usuário já está em uso');
+        else if (error.detail.includes('email'))
+          throw new ConflictException('Endereço de email já está em uso');
       } else {
         throw new InternalServerErrorException(
           'Erro ao salvar o usuário no banco de dados',
@@ -66,12 +72,13 @@ export class UsersService {
     if (users.length === 0)
       throw new NotFoundException('Não existem usuarios cadastrados');
     return users.map((user) => ({
-      userId: user.id,
+      id: user.id,
       username: user.username,
       email: user.email,
       name: user.name,
       position: user.position,
       profile: user.profile,
+      cpf: user.cpf,
     }));
   }
 
@@ -90,6 +97,7 @@ export class UsersService {
       name: user.name,
       position: user.position,
       profile: user.profile,
+      cpf: user.cpf,
     };
   }
 
@@ -98,12 +106,13 @@ export class UsersService {
   async updateUser(updateUserDto: UpdateUserDto, id: string): Promise<UserDto> {
     const user = await this.userRepository.findOneBy({ id: id });
     if (!user) throw new NotFoundException('Usuário não encontrado');
-    const { name, username, email, position, profile } = updateUserDto;
+    const { name, username, email, position, profile, cpf } = updateUserDto;
     user.name = name ? name : user.name;
     user.username = username ? username : user.username;
     user.email = email ? email : user.email;
     user.position = position ? position : user.position;
     user.profile = profile ? profile : user.profile;
+    user.cpf = cpf ? cpf : user.cpf;
 
     try {
       await this.userRepository.save(user);
@@ -113,6 +122,7 @@ export class UsersService {
         name: user.name,
         position: user.position,
         profile: user.profile,
+        cpf: user.cpf,
       };
     } catch (error) {
       throw new InternalServerErrorException(
