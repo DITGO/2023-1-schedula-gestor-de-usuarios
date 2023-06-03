@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
@@ -85,6 +86,44 @@ describe('UsersService', () => {
       });
       expect(usersRepository.create);
     });
+
+    it('should throw a ConflictException if the cpf is already in use', async () => {
+      jest
+        .spyOn(usersRepository, 'save')
+        .mockRejectedValue({ code: '23505', detail: 'cpf' });
+
+      await expect(usersService.createUser(dto)).rejects.toThrowError(
+        ConflictException,
+      );
+    });
+
+    it('should throw a ConflictException if the email is already in use', async () => {
+      jest
+        .spyOn(usersRepository, 'save')
+        .mockRejectedValue({ code: '23505', detail: 'email' });
+
+      await expect(usersService.createUser(dto)).rejects.toThrowError(
+        ConflictException,
+      );
+    });
+
+    it('should throw a ConflictException if the username is already in use', async () => {
+      jest
+        .spyOn(usersRepository, 'save')
+        .mockRejectedValue({ code: '23505', detail: 'username' });
+
+      await expect(usersService.createUser(dto)).rejects.toThrowError(
+        ConflictException,
+      );
+    });
+
+    it('should throw an InternalServerErrorException if the user cannot be created', async () => {
+      jest.spyOn(usersRepository, 'save').mockRejectedValue({ code: '12345' });
+
+      await expect(usersService.createUser(dto)).rejects.toThrowError(
+        InternalServerErrorException,
+      );
+    });
   });
 
   describe('findUsers', () => {
@@ -127,6 +166,22 @@ describe('UsersService', () => {
     it('should return an updated user successfully', async () => {
       const response = await usersService.updateUser({ ...dto }, id);
       expect(response).toMatchObject({ ...mockUpdateUserDto });
+    });
+
+    it('should update the fields to the same if it is empty', async () => {
+      const response = await usersService.updateUser(
+        { ...dto, name: '', username: '', email: '', position: '', cpf: '' },
+        id,
+      );
+      expect(response).toMatchObject({ ...mockUpdateUserDto });
+    });
+
+    it('should throw NotFoundException when user cannot be found', async () => {
+      jest.spyOn(usersRepository, 'findOneBy').mockResolvedValue(null);
+
+      await expect(usersService.updateUser(dto, id)).rejects.toThrowError(
+        NotFoundException,
+      );
     });
 
     it('should return an internal server error exception when user cannot be updated', async () => {
